@@ -15,7 +15,8 @@ var game = {
     this.unanswered = 0;
     this.questions = [];
     this.fillQuestions();
-    debugOut("Push Question");
+	debugOut("Push Question");
+	game.writeQuestion(0);
   },
 
   fillQuestions: function() {
@@ -80,9 +81,7 @@ var game = {
   },
 
   writeQuestion: function(index) {
-    $("#question").html(
-      this.questions[index].text
-    );
+    $("#question").html(this.questions[index].text);
     // this.questions[index].answers[0]);
     // var ansList = $("ul.answers");
     // for(i=0;i<4;i++)
@@ -108,9 +107,9 @@ var game = {
       } else {
         $(this).addClass("inCorrectAnswer");
       }
-	});
-	this.resetTimer();
-	this.timerStart();
+    });
+    this.resetTimer();
+    this.timerStart();
   },
 
   resetTimer: function() {
@@ -121,17 +120,17 @@ var game = {
     this.timeRunning = true;
   },
   timerUpdate: function() {
-	console.log("Entered timerUpdate "+ game.time);
-	game.time--;
-    $("#timer").text(game.time);
+    console.log("Entered timerUpdate " + game.time);
+    game.time--;
+    $("#timer").html("<small> " + game.time + " </small>");
     if (game.time <= 0) {
       game.answer(-1);
     }
   },
   answer: function(response) {
-	clearInterval(intervalId);
+    clearInterval(intervalId);
     this.timeRunning = false;
-	switch (response) {
+    switch (response) {
       case -1:
         this.unanswered++;
         break;
@@ -147,14 +146,37 @@ var game = {
     if (this.correct + this.incorrect + this.unanswered < 8) {
       this.writeQuestion(this.correct + this.incorrect + this.unanswered);
     } else {
-      //end game
+      this.endGame();
     }
   },
   clearAnswers: function() {
     $("li").each(function(i) {
       $(this).removeClass();
     });
+  },
+  endGame: function() {
+    $("#question").html("Game Over");
+    $("li").each(function(i) {
+		if(i==0)
+		{
+				$(this).text("Correct: "+ game.correct);
+		}
+		if(i==1)
+			{
+				$(this).text("Incorrect: "+ game.incorrect);
+			}
+		if(i==2)
+			{
+				$(this).text("Unanswered: "+ game.unanswered);
+			}
+		if(i==3)
+			{
+				$(this).text("THANKS FOR PLAYING");
+			}
+	});
+	setTimeout(startGame, 6000);
   }
+
 };
 
 function debugOut(place) {
@@ -167,8 +189,12 @@ function debugOut(place) {
 
 
 $(document).ready(function () {
-	 $("#timer").text("47");
 	game.startGame();
-	game.writeQuestion(0);
-
+	
+	$("li").click(function(){
+		if ($(this).hasClass("correctAnswer"))
+			game.answer(1);
+		else if ($(this).hasClass("inCorrectAnswer"))
+			game.answer(0);
+	});
 });
