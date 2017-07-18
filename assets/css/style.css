@@ -6,7 +6,10 @@ h2{
 	font-family: 'Space Mono', monospace;
 }
 
-p{
+ul{
+	list-style-type: none;
 	font-family: 'Space Mono', monospace;
 	font-size: 2em;
+	padding: 0;
+	margin:0;
 }
