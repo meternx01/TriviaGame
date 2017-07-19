@@ -17,3 +17,15 @@ li{
 	background-color: #eee;
 	margin-bottom: 1em;
 }
+li:hover{
+	color: #FF00FF;
+}
+
+img{
+	height:240px;
+	max-width:240px;
+}
+/*body{
+	background-image: url("../images/background.jpg");
+	opacity: 50%;
+}*/
